@@ -28,9 +28,14 @@ class HomeScreen extends StatelessWidget {
         itemCount: _videos.length,
         itemBuilder: (context, index) {
           final video = _videos[index];
+          final embedUrl =
+              'https://www.youtube.com/embed/${video['id']}?playsinline=1&rel=0';
           final controller = WebViewController()
             ..setJavaScriptMode(JavaScriptMode.unrestricted)
-            ..loadRequest(Uri.parse('https://www.youtube.com/embed/${video['id']}'));
+            ..loadRequest(
+              Uri.parse(embedUrl),
+              headers: {'Referer': 'https://www.youtube.com'},
+            );
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 20),
