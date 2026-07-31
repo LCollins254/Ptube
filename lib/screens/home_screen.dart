@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,6 +28,10 @@ class HomeScreen extends StatelessWidget {
         itemCount: _videos.length,
         itemBuilder: (context, index) {
           final video = _videos[index];
+          final controller = WebViewController()
+            ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..loadRequest(Uri.parse('https://www.youtube.com/embed/${video['id']}'));
+
           return Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Column(
@@ -35,16 +39,9 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(14),
-                  child: YoutubePlayer(
-                    controller: YoutubePlayerController(
-                      initialVideoId: video['id']!,
-                      flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
-                    ),
-                    showVideoProgressIndicator: true,
-                    progressColors: const ProgressBarColors(
-                      playedColor: Color(0xFFFF3B3B),
-                      handleColor: Color(0xFFFF3B3B),
-                    ),
+                  child: SizedBox(
+                    height: 220,
+                    child: WebViewWidget(controller: controller),
                   ),
                 ),
                 const SizedBox(height: 8),
