@@ -2,36 +2,36 @@ name: Build Ptube APK
 
 on:
   push:
-      branches: [main]
-        workflow_dispatch: {}
+    branches: [main]
+  workflow_dispatch: {}
 
-        jobs:
-          build:
-              runs-on: ubuntu-latest
-                  steps:
-                        - name: Checkout code
-                                uses: actions/checkout@v4
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-                                      - name: Set up Java
-                                              uses: actions/setup-java@v4
-                                                      with:
-                                                                distribution: 'zulu'
-                                                                          java-version: '17'
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
-                                                                                - name: Set up Flutter
-                                                                                        uses: subosito/flutter-action@v2
-                                                                                                with:
-                                                                                                          flutter-version: '3.32.0'
-                                                                                                                    channel: 'stable'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.0'
+          channel: 'stable'
 
-                                                                                                                          - name: Install dependencies
-                                                                                                                                  run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-                                                                                                                                        - name: Build release APK
-                                                                                                                                                run: flutter build apk --release --split-per-abi
+      - name: Build release APK
+        run: flutter build apk --release --split-per-abi
 
-                                                                                                                                                      - name: Upload APK artifact
-                                                                                                                                                              uses: actions/upload-artifact@v4
-                                                                                                                                                                      with:
-                                                                                                                                                                                name: ptube-release-apk
-                                                                                                                                                                                          path: build/app/outputs/flutter-apk/*.apk
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ptube-release-apk
+          path: build/app/outputs/flutter-apk/*.apk
