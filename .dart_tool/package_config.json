@@ -1,5 +1,5 @@
 {
-  "configVersion": 2,
+  "configVersion": 8,
   "packages": [
     {
       "name": "archive",
